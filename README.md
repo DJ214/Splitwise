@@ -135,10 +135,10 @@ The expense-sharing system follows a three-tier architecture with the presentati
   ```
 ### Expense Management
 #### 4. Create an expense
-- **Endpoint:** POST /api/expenses/
+- **Endpoint:** `POST /api/expenses/`
 - **Request:**
-```json
-{
+  ```json
+  {
   "name": "Electricity Bill",
   "totalAmount": 1000,
   "createdBy": 1,
@@ -146,11 +146,11 @@ The expense-sharing system follows a three-tier architecture with the presentati
   "expenseDate": "2023-11-18",
   "isSimplified": true,
   "participants": [1, 2, 3, 4]
-}
-```
+  }
+  ```
 - **Response:**
-```json
-{
+  ```json
+  {
   "expenseId": 1,
   "name": "Electricity Bill",
   "totalAmount": 1000,
@@ -159,14 +159,13 @@ The expense-sharing system follows a three-tier architecture with the presentati
   "expenseDate": "2023-11-18",
   "isSimplified": true,
   "participants": [1, 2, 3, 4]
-}
-```
+  }
+  ```
 #### 5. Get expense details
-- **Endpoint:** GET /api/expenses/{expenseId}/
+- **Endpoint:** `GET /api/expenses/{expenseId}/`
 - **Response:**
-```json
-Copy code
-{
+  ```json
+  {
   "expenseId": 1,
   "name": "Electricity Bill",
   "totalAmount": 1000,
@@ -175,22 +174,22 @@ Copy code
   "expenseDate": "2023-11-18",
   "isSimplified": true,
   "participants": [1, 2, 3, 4]
-}
-```
+  }
+  ```
 #### 6. Update expense details
-- **Endpoint:** PUT /api/expenses/{expenseId}/
+- **Endpoint:** `PUT /api/expenses/{expenseId}/`
 - **Request:**
-```json
-{
+  ```json
+  {
   "name": "Updated Expense Name",
   "totalAmount": 1200,
   "expenseType": "EXACT",
   "participants": [1, 2, 3]
-}
-```
+  }
+  ```
 - **Response:**
-```json
-{
+  ```json
+  {
   "expenseId": 1,
   "name": "Updated Expense Name",
   "totalAmount": 1200,
@@ -199,35 +198,37 @@ Copy code
   "expenseDate": "2023-11-18",
   "isSimplified": true,
   "participants": [1, 2, 3]
-}
-```
+  }
+  ```
+  
 #### 7. Add a transaction to an expense
-- **Endpoint:** POST /api/expenses/{expenseId}/add-transaction/
+- **Endpoint:** `POST /api/expenses/{expenseId}/add-transaction/`
 - **Request:**
-```json
-Copy code
-{
+  ```json
+
+  {
   "payer": 1,
   "payee": 2,
   "amount": 250
-}
-```
+  }
+  ```
+  
 - **Response:**
-```json
-Copy code
-{
+  ```json
+
+  {
   "transactionId": 1,
   "payer": 1,
   "payee": 2,
   "amount": 250
-}
-```
+  }
+  ```
+
 #### 8. Get all transactions for an expense
-- **Endpoint:** GET /api/expenses/{expenseId}/transactions/
+- **Endpoint:** `GET /api/expenses/{expenseId}/transactions/`
 - **Response:**
-```json
-Copy code
-[
+  ```json
+  [
   {
     "transactionId": 1,
     "payer": 1,
@@ -235,14 +236,15 @@ Copy code
     "amount": 250
   },
   // Additional transactions...
-]
-```
-#### 9. Get user's passbook
-- **Endpoint:** GET /api/users/{userId}/passbook/
-- **Response:**
-```json
+  ]
+  ```
 
-[
+#### 9. Get user's passbook
+- **Endpoint:** `GET /api/users/{userId}/passbook/`
+- **Response:**
+  ```json
+
+  [
   {
     "transactionId": 1,
     "expenseId": 1,
@@ -251,19 +253,22 @@ Copy code
     "date": "2023-11-18"
   },
   // Additional passbook entries...
-]
-```
+  ]
+  ```
 ### Balance Management
+
 #### 10. Get balances for a user
-- **Endpoint:** GET /api/balances/{userId}/
+- **Endpoint:** `GET /api/balances/{userId}/`
 - **Response:**
-```json
-Copy code
-{
+  ```json
+  {
   "user": {
     "userId": 1,
-    "name": "John
-```
+    "name": "John"
+              }
+  }
+  ```
+
 ## Class Structure
 
 ### User Class
