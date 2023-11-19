@@ -1,109 +1,116 @@
-## Splitwise
-System Design
-Architecture Diagram
+
+# Splitwise
+
+## Architecture Overview
+
+### Architecture Diagram
+
 The expense-sharing system follows a three-tier architecture with the presentation layer, business logic layer, and data access layer.
 
-sql
-Copy code
-   +---------------------+        +-----------------------+        +------------------------+
-   |      Views          |  <---  |      Views/Logic      |  <---  |       Models/DB         |
-   +---------------------+        +-----------------------+        +------------------------+
-   |   HTML Templates    |        |    Business Logic     |        |   Database Models      |
-   +---------------------+        +-----------------------+        +------------------------+
-             |                             |                                 |
-             |                             |                                 |
-             +-------------------------------------------------------------+
-                                           |
-                                           v
-                                    +--------------+
-                                    |    Models    |
-                                    +--------------+
-                                    | User         |
-                                    | Expense      |
-                                    | Transaction  |
-                                    +--------------+
-API Contracts
-User Management
-Create User
-Endpoint: /api/users/
-Method: POST
-Request Body:
-json
-Copy code
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "mobile_number": "1234567890"
-}
-Get User Details
-Endpoint: /api/users/{user_id}/
-Method: GET
-Expense Management
-Create Expense
+```
++---------------------+        +-----------------------+        +------------------------+
+|      Controller     |  <---  |      Service Layer    |  <---  |       Data Access      |
++---------------------+        +-----------------------+        +------------------------+
+|   API Endpoints     |        |    Business Logic     |        |   Database Queries     |
++---------------------+        +-----------------------+        +------------------------+
+            |                             |                                 |
+            |                             |                                 |
+            +-------------------------------------------------------------+
+                                          |
+                                          v
+                                   +--------------+
+                                   |    Models    |
+                                   +--------------+
+                                   | User         |
+                                   | Expense      |
+                                   | Transaction  |
+                                   +--------------+
 
-Endpoint: /api/expenses/
-Method: POST
-Request Body:
-json
-Copy code
-{
-  "name": "Electricity Bill",
-  "total_amount": 1000,
-  "created_by": 1,
-  "expense_type": "EQUAL",
-  "expense_date": "2023-11-18",
-  "is_simplified": true,
-  "participants": [1, 2, 3, 4]
-}
-Get Expense Details
 
-Endpoint: /api/expenses/{expense_id}/
-Method: GET
-Add Transaction to Expense
+```
 
-Endpoint: /api/expenses/{expense_id}/add-transaction/
-Method: POST
-Request Body:
-json
-Copy code
-{
-  "payer": 1,
-  "payee": 2,
-  "amount": 250
-}
-Balance Management
-Get Balances for a User
+## Database Schema
 
-Endpoint: /api/balances/{user_id}/
-Method: GET
-Simplify Balances
+### User Table
 
-Endpoint: /api/balances/simplify/
-Method: POST
-Class Structure
-User Class
-python
-Copy code
-class User(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    mobile_number = models.CharField(max_length=20)
-Expense Class
-python
-Copy code
-class Expense(models.Model):
-    name = models.CharField(max_length=255)
-    total_amount = models.FloatField()
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    expense_type = models.CharField(max_length=10)  # EQUAL, EXACT, PERCENT
-    expense_date = models.DateField()
-    is_simplified = models.BooleanField()
-    participants = models.ManyToManyField(User, through='Transaction')
-Transaction Class
-python
-Copy code
-class Transaction(models.Model):
-    expense = models.ForeignKey(Expense, on_delete=models.CASCADE)
-    payer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payer_transactions')
-    payee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payee_transactions')
-    amount = models.FloatField()
+- `userId` (Primary Key)
+- `name`
+- `email`
+- `mobileNumber`
+
+### Expense Table
+
+- `expenseId` (Primary Key)
+- `name`
+- `totalAmount`
+- `createdBy` (Foreign Key referencing User)
+- `expenseType` (ENUM: EQUAL, EXACT, PERCENT)
+- `expenseDate`
+- `isSimplified` (Boolean)
+
+### Transaction Table
+
+- `transactionId` (Primary Key)
+- `expenseId` (Foreign Key referencing Expense)
+- `payerId` (Foreign Key referencing User)
+- `payeeId` (Foreign Key referencing User)
+- `amount`
+
+
+## API Endpoints
+
+### User Management
+
+- `POST /api/users/` - Create a user
+- `GET /api/users/{userId}/` - Get user details
+- `PUT /api/users/{userId}/` - Update user details
+
+### Expense Management
+
+- `POST /api/expenses/` - Create an expense
+- `GET /api/expenses/{expenseId}/` - Get expense details
+- `PUT /api/expenses/{expenseId}/` - Update expense details
+- `POST /api/expenses/{expenseId}/add-transaction/` - Add a transaction to an expense
+- `GET /api/expenses/{expenseId}/transactions/` - Get all transactions for an expense
+- `GET /api/users/{userId}/passbook/` - Get user's passbook
+
+### Balance Management
+
+- `GET /api/balances/{userId}/` - Get balances for a user
+- `POST /api/balances/simplify/` - Simplify balances
+
+## Class Structure
+
+### User Class
+
+```python
+class User:
+    userId
+    name
+    email
+    mobileNumber
+```
+### Expense Class
+
+```python
+class Expense:
+    expenseId
+    name
+    totalAmount
+    createdBy (User)
+    expenseType
+    expenseDate
+    isSimplified
+    participants (List of Users)
+    transactions (List of Transactions)
+```
+### Transaction Class
+
+```python
+class Transaction:
+    transactionId
+    expenseId
+    payer (User)
+    payee (User)
+    amount
+```
