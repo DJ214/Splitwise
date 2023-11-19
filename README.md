@@ -7,7 +7,7 @@
 
 The expense-sharing system follows a three-tier architecture with the presentation layer, business logic layer, and data access layer.
 
-```
+```sql
 +---------------------+        +-----------------------+        +------------------------+
 |      Controller     |  <---  |      Service Layer    |  <---  |       Data Access      |
 +---------------------+        +-----------------------+        +------------------------+
