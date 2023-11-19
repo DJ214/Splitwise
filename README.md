@@ -89,8 +89,8 @@ The expense-sharing system follows a three-tier architecture with the presentati
 - **Request:**
   ```json
   {
-    "name": "John Doe",
-    "email": "john@example.com",
+    "name": "abc def",
+    "email": "abc@example.com",
     "mobileNumber": "1234567890"
   }
   ```
@@ -98,8 +98,8 @@ The expense-sharing system follows a three-tier architecture with the presentati
   ```json
   {
   "userId": 1,
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "abc def",
+  "email": "abc@example.com",
   "mobileNumber": "1234567890"
   }
   ```
@@ -109,8 +109,8 @@ The expense-sharing system follows a three-tier architecture with the presentati
   ```json
   {
   "userId": 1,
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "abc def",
+  "email": "abc@example.com",
   "mobileNumber": "1234567890"
   }
   ```
@@ -264,7 +264,7 @@ The expense-sharing system follows a three-tier architecture with the presentati
   {
   "user": {
     "userId": 1,
-    "name": "John"
+    "name": "abc"
               }
   }
   ```
